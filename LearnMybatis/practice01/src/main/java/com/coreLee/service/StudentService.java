@@ -7,7 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 
 public class StudentService {
     public static void main(String[] args) {
-        SqlSession sqlSession = SqlSessionUtil.getSqlSession();
+        SqlSessionUtil sqlSessionUtil = SqlSessionUtil.getInstance();
+        SqlSession sqlSession = sqlSessionUtil.getSqlSession();
         StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
        /* Student student = new Student();
         student.setId(2);

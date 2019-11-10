@@ -5,17 +5,18 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 public class SqlSessionUtil {
 
-    private static SqlSessionUtil sqlSessionUtil = new SqlSessionUtil();
+    private static SqlSessionUtil sqlSessionUtil;
 
     private static SqlSessionFactory sqlSessionFactory;
 
     private SqlSessionUtil() {
-        sqlSessionFactory = getSqlSessionFactory();
     }
 
     /**
@@ -23,25 +24,27 @@ public class SqlSessionUtil {
      *
      * @return
      */
-    private static SqlSessionFactory getSqlSessionFactory() {
+    private SqlSessionFactory getSqlSessionFactory() {
+
         String path = SqlSessionUtil.class.getClassLoader().getResource("").getPath();
         System.out.println(path);
-        String resourece = path+ "mybatis-config.xml";
-        try {
-            InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
-            SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
-            return sqlSessionFactoryBuilder.build(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        String pathString = System.getProperty("user.dir").replaceAll("\\\\", "/") + "/src/main/resources/mybatis-config.xml";
+        System.out.println(pathString);
+        // InputStream inputStream  = Resources.getResourceAsStream(SqlSessionUtil.class.getClassLoader(),pathString);
+        InputStream inputStream = this.getClass().getResourceAsStream("/mybatis-config.xml");
+        SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
+        return sqlSessionFactoryBuilder.build(inputStream);
     }
 
-    public static SqlSession getSqlSession() {
+    public SqlSession getSqlSession() {
         if (null == sqlSessionFactory) {
             sqlSessionFactory = getSqlSessionFactory();
         }
         return sqlSessionFactory.openSession();
+    }
+
+    public static SqlSessionUtil getInstance() {
+        return new SqlSessionUtil();
     }
 
 
