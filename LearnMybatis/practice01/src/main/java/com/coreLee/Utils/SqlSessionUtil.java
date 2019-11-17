@@ -4,6 +4,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class SqlSessionUtil {
+
+    private static Logger logger = Logger.getLogger(SqlSessionUtil.class);
 
     private static SqlSessionUtil sqlSessionUtil;
 
@@ -44,6 +47,7 @@ public class SqlSessionUtil {
     }
 
     public static SqlSessionUtil getInstance() {
+
         return new SqlSessionUtil();
     }
 
